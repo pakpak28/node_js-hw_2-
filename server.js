@@ -8,14 +8,16 @@ let users = [];
 
 const server = http.createServer((req, res) => {
   if (req.headers.iknowyoursecret == "TheOwlsAreNotWhatTheySeem") {
+    const { username } = req.headers;
+    const { remoteAddress } = req.connection;
     console.log(
-      `Glad to see >>> ${req.headers.username} 
-      and his ip adress >>> ${req.connection.remoteAddress}.`
+      `Glad to see >>> ${username} 
+      and his ip adress >>> ${remoteAddress}.`
     );
 
     users.push({
-      name: req.headers.username,
-      ip: req.connection.remoteAddress,
+      name: username,
+      ip: remoteAddress,
     });
     fs.writeFile(DATABASE, JSON.stringify(users), { flag: "a" }, (err) => {
       console.log("error", err);
